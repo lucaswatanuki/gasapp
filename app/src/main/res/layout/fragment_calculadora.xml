@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalculadoraFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:paddingRight="30dp">
+            <TextView
+                android:id="@+id/gasolina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preço da Gasolina/L: "
+                android:textSize="20dp"
+
+
+                />
+
+            <EditText
+                android:id="@+id/preco_gasolina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="30dp"
+                android:layout_marginLeft="55dp"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/etanol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preço do Etanol/L: "
+                android:textSize="20dp"
+
+                />
+
+            <EditText
+                android:id="@+id/preco_etanol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="30dp"
+                android:layout_marginLeft="46dp"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <Button
+        android:layout_marginTop="40dp"
+        android:id="@+id/button_calculo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CALCULAR"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resultado"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        />
+
+</LinearLayout>
