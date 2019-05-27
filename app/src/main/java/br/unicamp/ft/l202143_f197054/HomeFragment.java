@@ -13,6 +13,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -31,6 +34,7 @@ public class HomeFragment extends Fragment {
     private RadioGroup rgTipo;
     private String tipoCombustivel, pagamento, data;
     private Double total, litros, preco, odometro;
+    private DatabaseReference mFirebaseDatabaseReference;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -51,7 +55,7 @@ public class HomeFragment extends Fragment {
         spinnerPagamento = view.findViewById(R.id.spinnerPagamento);
         rgTipo = view.findViewById(R.id.rgTipo);
 
-
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,7 +76,11 @@ public class HomeFragment extends Fragment {
                         odometro = Double.parseDouble(etOdometro.getText().toString());
                         data = etData.getText().toString();
 
+
                         Abastecimentos.addItem(data, odometro, tipoCombustivel, total, litros, preco, pagamento);
+                        HistoricoDB historicoDB = new HistoricoDB(data, tipoCombustivel, litros, total);
+                        mFirebaseDatabaseReference.child("historico").push().setValue(historicoDB);
+
 
                         Toast.makeText(getContext(), "Salvo com sucesso!", Toast.LENGTH_SHORT).show();
 
