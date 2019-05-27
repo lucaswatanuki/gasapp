@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_gas"
-            android:title="Import" />
+            android:title="Abastecimento" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_historico"
-            android:title="Gallery" />
+            android:title="Histórico" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_calculadora"
-            android:title="Slideshow" />
+            android:title="Calculadora" />
 
     </group>
 

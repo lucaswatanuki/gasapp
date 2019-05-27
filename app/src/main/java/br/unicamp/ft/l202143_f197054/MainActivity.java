@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity
             Fragment calculadora = fragmentManager.findFragmentByTag("calculadora");
 
             if (calculadora == null) {
-                calculadora = new HistoricoFragment();
+                calculadora = new CalculadoraFragment();
             }
 
             replaceFragment(calculadora, "calculadora");

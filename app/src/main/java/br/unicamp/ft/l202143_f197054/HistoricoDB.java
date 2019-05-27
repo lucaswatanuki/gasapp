@@ -12,6 +12,9 @@ public class HistoricoDB {
         this.total = total;
     }
 
+    public HistoricoDB() {
+    }
+
     public String getData() {
         return data;
     }
