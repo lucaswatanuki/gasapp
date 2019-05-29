@@ -1,5 +1,7 @@
 package br.unicamp.ft.l202143_f197054;
 
+import java.util.ArrayList;
+
 public class HistoricoDB {
 
     private String data, tipo;

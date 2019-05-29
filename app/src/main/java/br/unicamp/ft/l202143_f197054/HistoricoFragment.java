@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -23,7 +24,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 
 /**
@@ -32,95 +36,53 @@ import com.google.firebase.database.ValueEventListener;
 public class HistoricoFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private ArrayList<HistoricoDB> arrayList;
+    private FirebaseRecyclerOptions<HistoricoDB> options;
+    private FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> adapter;
+    private DatabaseReference databaseReference;
+
+    public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
+        TextView tvData;
+        TextView tvTipo;
+
+        public HistoricoViewHolder(View v) {
+            super(v);
+            tvData = (TextView) v.findViewById(R.id.tvData);
+            tvTipo = (TextView) v.findViewById(R.id.tvTipo);
+
+        }
+    }
+
+    // Firebase instance variables
     private DatabaseReference mFirebaseDatabaseReference;
-    FirebaseRecyclerOptions<HistoricoDB> options;
-    FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> mFirebaseAdapter;
-    private FirebaseAuth mAuth;
-    private View view;
+    private FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder>
+            mFirebaseAdapter;
 
-    public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvData;
-        TextView tvTotal;
-        TextView tvLitros;
-        TextView tvTipo;
-
-        public HistoricoViewHolder(View itemView) {
-            super(itemView);
-
-            tvData = itemView.findViewById(R.id.tvData);
-            tvTipo = itemView.findViewById(R.id.tvTipo);
-            tvLitros = itemView.findViewById(R.id.tvLitros);
-            tvTotal = itemView.findViewById(R.id.tvTotal);
-        }
-    }
-/*
-    public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvData;
-        TextView tvTotal;
-        TextView tvLitros;
-        TextView tvTipo;
-
-        public HistoricoViewHolder(View view) {
-            super(view);
-
-            tvData = itemView.findViewById(R.id.tvData);
-            tvTipo = itemView.findViewById(R.id.tvTipo);
-            tvLitros = itemView.findViewById(R.id.tvLitros);
-            tvTotal = itemView.findViewById(R.id.tvTotal);
-        }
-    }
-*/
 
     public HistoricoFragment() {
+        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment if view is null to avoid waste
-        if (view == null) {
-            view = inflater.inflate(R.layout.fragment_historico, container, false);
-        }
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference().child("historico");
-/*
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
+        // Inflate the layout for this fragment
+        View lview = inflater.inflate(R.layout.fragment_historico, container, false);
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://gasapp-c67e5.firebaseio.com/");
         SnapshotParser<HistoricoDB> parser = new SnapshotParser<HistoricoDB>() {
-            @NonNull
             @Override
-            public HistoricoDB parseSnapshot(@NonNull DataSnapshot snapshot) {
-                HistoricoDB historicoDB = null;
-                System.out.println(snapshot);
-                try {
-                    historicoDB = snapshot.getValue(HistoricoDB.class);
-                } catch (Exception e) {
-
-                    for (DataSnapshot remoteResposta : snapshot.getChildren()) {
-                            System.out.println("DATASET " + remoteResposta);
-                            HistoricoDB resposta = remoteResposta.getValue(HistoricoDB.class);
-                            Log.v("DATASET", resposta.toString());
-
-                        }
-
-                  //  historicoDB = snapshot.getChildren()[0].getValue(HistoricoDB.class);
-                }
+            public HistoricoDB parseSnapshot(DataSnapshot dataSnapshot) {
+                HistoricoDB historicoDB = dataSnapshot.getValue(HistoricoDB.class);
                 return historicoDB;
             }
         };
 
         DatabaseReference messagesRef = mFirebaseDatabaseReference.child("historico");
-        FirebaseRecyclerOptions<HistoricoDB> options = new FirebaseRecyclerOptions.Builder<HistoricoDB>().setQuery(messagesRef, parser).build();
-
+        FirebaseRecyclerOptions<HistoricoDB> options =
+                new FirebaseRecyclerOptions.Builder<HistoricoDB>()
+                        .setQuery(messagesRef, parser)
+                        .build();
         mFirebaseAdapter = new FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder>(options) {
             @Override
             public HistoricoViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -136,66 +98,23 @@ public class HistoricoFragment extends Fragment {
                 viewHolder.tvTipo.setText(historicoDB.getTipo());
             }
         };
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        RecyclerView mRecycler = ((RecyclerView) view.findViewById(R.id.recycler_view));
+        RecyclerView mRecycler = ((RecyclerView) lview.findViewById(R.id.recycler_view));
         mRecycler.setLayoutManager(llm);
         mRecycler.setAdapter(mFirebaseAdapter);
-*/
-        return view;
+        return lview;
     }
 
-    public void onStart() {
-        super.onStart();
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<HistoricoDB>().setQuery(mFirebaseDatabaseReference, HistoricoDB.class).build();
-
-        FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> adapter = new FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull final HistoricoViewHolder holder, int position, @NonNull HistoricoDB model) {
-                String historicoID = getRef(position).getKey();
-
-                mFirebaseDatabaseReference.child(historicoID).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild("historico")) {
-                            String data = dataSnapshot.child("data").getValue().toString();
-                            String litros = dataSnapshot.child("litros").getValue().toString();
-                            String tipo = dataSnapshot.child("tipo").getValue().toString();
-                            String total = dataSnapshot.child("total").getValue().toString();
-
-                            holder.tvData.setText(data);
-                            holder.tvLitros.setText(litros);
-                            holder.tvTipo.setText(tipo);
-                            holder.tvTotal.setText(total);
-                        }
-                        else{
-                            System.out.println("Não ha dados!");
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-            }
-
-            @NonNull
-            @Override
-            public HistoricoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
-                HistoricoViewHolder historicoViewHolder = new HistoricoViewHolder(view);
-                return historicoViewHolder;
-            }
-        };
-
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
+    @Override
+    public void onPause() {
+        mFirebaseAdapter.stopListening();
+        super.onPause();
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFirebaseAdapter.startListening();
+    }
 }
