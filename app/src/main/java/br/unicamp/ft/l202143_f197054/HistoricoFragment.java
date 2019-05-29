@@ -2,30 +2,21 @@ package br.unicamp.ft.l202143_f197054;
 
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -44,12 +35,18 @@ public class HistoricoFragment extends Fragment {
     public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
         TextView tvData;
         TextView tvTipo;
+        TextView tvLitros;
+        TextView tvTotal;
+        ImageView imageView;
+        private int position;
 
         public HistoricoViewHolder(View v) {
             super(v);
             tvData = (TextView) v.findViewById(R.id.tvData);
             tvTipo = (TextView) v.findViewById(R.id.tvTipo);
-
+            tvLitros = (TextView) v.findViewById(R.id.tvLitros);
+            tvTotal = (TextView) v.findViewById(R.id.tvTotal);
+            imageView = (ImageView) v.findViewById(R.id.imgView);
         }
     }
 
@@ -73,16 +70,21 @@ public class HistoricoFragment extends Fragment {
         SnapshotParser<HistoricoDB> parser = new SnapshotParser<HistoricoDB>() {
             @Override
             public HistoricoDB parseSnapshot(DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot);
                 HistoricoDB historicoDB = dataSnapshot.getValue(HistoricoDB.class);
+                System.out.println(historicoDB.getTipo());
                 return historicoDB;
             }
         };
 
         DatabaseReference messagesRef = mFirebaseDatabaseReference.child("historico");
+
         FirebaseRecyclerOptions<HistoricoDB> options =
                 new FirebaseRecyclerOptions.Builder<HistoricoDB>()
                         .setQuery(messagesRef, parser)
                         .build();
+
+
         mFirebaseAdapter = new FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder>(options) {
             @Override
             public HistoricoViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -91,11 +93,22 @@ public class HistoricoFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(final HistoricoViewHolder viewHolder,
+            protected void onBindViewHolder(HistoricoViewHolder viewHolder,
                                             int position,
                                             HistoricoDB historicoDB) {
+
                 viewHolder.tvData.setText(historicoDB.getData());
                 viewHolder.tvTipo.setText(historicoDB.getTipo());
+                viewHolder.tvLitros.setText(String.valueOf(historicoDB.getLitros()));
+                viewHolder.tvTotal.setText(String.valueOf(historicoDB.getTotal()));
+
+                if (historicoDB.getTipo().equalsIgnoreCase("Gasolina")) {
+                    viewHolder.imageView.setImageResource(R.drawable.shell);
+                } else if (historicoDB.getTipo().equalsIgnoreCase("Etanol")) {
+                    viewHolder.imageView.setImageResource(R.drawable.postobr);
+                } else {
+                    viewHolder.imageView.setImageResource(R.drawable.posto);
+                }
             }
         };
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());

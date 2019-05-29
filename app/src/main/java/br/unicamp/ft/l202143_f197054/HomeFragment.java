@@ -81,7 +81,6 @@ public class HomeFragment extends Fragment {
                         HistoricoDB historicoDB = new HistoricoDB(data, tipoCombustivel, litros, total);
                         mFirebaseDatabaseReference.child("historico").push().setValue(historicoDB);
 
-
                         Toast.makeText(getContext(), "Salvo com sucesso!", Toast.LENGTH_SHORT).show();
 
                     } catch (Exception erro){

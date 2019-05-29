@@ -75,4 +75,5 @@ public class Abastecimento {
     public void setPagamento(String pagamento) {
         this.pagamento = pagamento;
     }
+
 }
