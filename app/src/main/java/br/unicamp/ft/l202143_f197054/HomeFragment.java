@@ -3,6 +3,8 @@ package br.unicamp.ft.l202143_f197054;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ public class HomeFragment extends Fragment {
     private String tipoCombustivel, pagamento, data, posto;
     private Double total, litros, preco, odometro;
     private DatabaseReference mFirebaseDatabaseReference;
+    TextWatcher textWatcher;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,6 +60,32 @@ public class HomeFragment extends Fragment {
         rgTipo = view.findViewById(R.id.rgTipo);
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
+        textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Double preco = Double.parseDouble(etPreco.getText().toString());
+                Double litro = Double.parseDouble(etLitros.getText().toString());
+                etLitros.removeTextChangedListener(textWatcher);
+
+                Double resultado = (preco * litro);
+                etTotal.setText(resultado.toString());
+
+                etLitros.addTextChangedListener(textWatcher);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                etLitros.addTextChangedListener(textWatcher);
+            }
+        };
+
+        etLitros.addTextChangedListener(textWatcher);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

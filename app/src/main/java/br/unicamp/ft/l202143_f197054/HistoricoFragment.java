@@ -106,7 +106,13 @@ public class HistoricoFragment extends Fragment {
                     viewHolder.imageView.setImageResource(R.drawable.shell);
                 } else if (historicoDB.getPosto().equalsIgnoreCase("Petrobras BR")) {
                     viewHolder.imageView.setImageResource(R.drawable.postobr);
-                } else if (historicoDB.getPosto().equalsIgnoreCase("Outros")){
+                } else if (historicoDB.getPosto().equalsIgnoreCase("Ipiranga")) {
+                    viewHolder.imageView.setImageResource(R.drawable.ipiranga);
+                } else if (historicoDB.getPosto().equalsIgnoreCase("Ale")) {
+                    viewHolder.imageView.setImageResource(R.drawable.ale);
+                } else if (historicoDB.getPosto().equalsIgnoreCase("Esso")) {
+                    viewHolder.imageView.setImageResource(R.drawable.esso);
+                } else if (historicoDB.getPosto().equalsIgnoreCase("Outros")) {
                     viewHolder.imageView.setImageResource(R.drawable.posto);
                 }
             }
