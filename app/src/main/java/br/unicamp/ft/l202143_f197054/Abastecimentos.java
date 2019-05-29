@@ -6,7 +6,7 @@ public class Abastecimentos {
 
     public static ArrayList<Abastecimento> abastecimentosList = new ArrayList<>();
 
-    public static void addItem(String data, double odometro, String combustivel, double total, double litros, double preco, String pagamento) {
-        abastecimentosList.add(new Abastecimento(data,odometro,combustivel,total,litros,preco,pagamento));
+    public static void addItem(String data, double odometro, String combustivel, double total, double litros, double preco, String pagamento, String posto) {
+        abastecimentosList.add(new Abastecimento(data,odometro,combustivel,total,litros,preco,pagamento, posto));
     }
 }

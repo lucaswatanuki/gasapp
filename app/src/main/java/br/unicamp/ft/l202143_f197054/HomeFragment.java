@@ -30,9 +30,9 @@ public class HomeFragment extends Fragment {
     private EditText etLitros;
     private EditText etTotal;
     private Button btnAdd;
-    private Spinner spinnerPagamento;
+    private Spinner spinnerPagamento, spinnerPosto;
     private RadioGroup rgTipo;
-    private String tipoCombustivel, pagamento, data;
+    private String tipoCombustivel, pagamento, data, posto;
     private Double total, litros, preco, odometro;
     private DatabaseReference mFirebaseDatabaseReference;
 
@@ -53,42 +53,44 @@ public class HomeFragment extends Fragment {
         etLitros = view.findViewById(R.id.etLitros);
         btnAdd = view.findViewById(R.id.btnSalvar);
         spinnerPagamento = view.findViewById(R.id.spinnerPagamento);
+        spinnerPosto = view.findViewById(R.id.spPosto);
         rgTipo = view.findViewById(R.id.rgTipo);
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
+            @Override
+            public void onClick(View v) {
+                try {
 
-                        int id = rgTipo.getCheckedRadioButtonId();
-                        if (id == R.id.btnEtanol){
-                            tipoCombustivel = "Etanol";
-                        } else {
-                            tipoCombustivel = "Gasolina";
-                        }
-
-                        litros = Double.parseDouble(etLitros.getText().toString());
-                        preco = Double.parseDouble(etPreco.getText().toString());
-                        total = Double.parseDouble(etTotal.getText().toString());
-                        pagamento = spinnerPagamento.getSelectedItem().toString();
-                        odometro = Double.parseDouble(etOdometro.getText().toString());
-                        data = etData.getText().toString();
-
-
-                        Abastecimentos.addItem(data, odometro, tipoCombustivel, total, litros, preco, pagamento);
-                        HistoricoDB historicoDB = new HistoricoDB(data, tipoCombustivel, litros, total);
-                        mFirebaseDatabaseReference.child("historico").push().setValue(historicoDB);
-
-                        Toast.makeText(getContext(), "Salvo com sucesso!", Toast.LENGTH_SHORT).show();
-
-                    } catch (Exception erro){
-                        erro.printStackTrace();
-                        Toast.makeText(getContext(), "Erro ao salvar informações", Toast.LENGTH_SHORT).show();
+                    int id = rgTipo.getCheckedRadioButtonId();
+                    if (id == R.id.btnEtanol) {
+                        tipoCombustivel = "Etanol";
+                    } else {
+                        tipoCombustivel = "Gasolina";
                     }
+
+                    litros = Double.parseDouble(etLitros.getText().toString());
+                    preco = Double.parseDouble(etPreco.getText().toString());
+                    total = Double.parseDouble(etTotal.getText().toString());
+                    pagamento = spinnerPagamento.getSelectedItem().toString();
+                    posto = spinnerPosto.getSelectedItem().toString();
+                    odometro = Double.parseDouble(etOdometro.getText().toString());
+                    data = etData.getText().toString();
+
+
+                    Abastecimentos.addItem(data, odometro, tipoCombustivel, total, litros, preco, pagamento, posto);
+                    HistoricoDB historicoDB = new HistoricoDB(data, tipoCombustivel, litros, total, posto);
+                    mFirebaseDatabaseReference.child("historico").push().setValue(historicoDB);
+
+                    Toast.makeText(getContext(), "Salvo com sucesso!", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception erro) {
+                    erro.printStackTrace();
+                    Toast.makeText(getContext(), "Erro ao salvar informações", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+        });
 
         return view;
     }

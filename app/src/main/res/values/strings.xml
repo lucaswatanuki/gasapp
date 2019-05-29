@@ -13,5 +13,14 @@
         <item>dinheiro</item>
     </string-array>
 
+    <string-array name="posto">
+        <item>ALE</item>
+        <item>Esso</item>
+        <item>Ipiranga</item>
+        <item>Petrobras BR</item>
+        <item>Shell</item>
+        <item>Outros</item>
+    </string-array>
+
 
 </resources>

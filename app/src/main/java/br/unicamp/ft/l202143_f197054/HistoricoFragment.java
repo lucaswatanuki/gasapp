@@ -97,16 +97,16 @@ public class HistoricoFragment extends Fragment {
                                             int position,
                                             HistoricoDB historicoDB) {
 
-                viewHolder.tvData.setText(historicoDB.getData());
+                viewHolder.tvData.setText("Data: " + historicoDB.getData());
                 viewHolder.tvTipo.setText(historicoDB.getTipo());
-                viewHolder.tvLitros.setText(String.valueOf(historicoDB.getLitros()));
-                viewHolder.tvTotal.setText(String.valueOf(historicoDB.getTotal()));
+                viewHolder.tvLitros.setText("Litros: " + String.valueOf(historicoDB.getLitros()));
+                viewHolder.tvTotal.setText("Total: R$ " + String.valueOf(historicoDB.getTotal()));
 
-                if (historicoDB.getTipo().equalsIgnoreCase("Gasolina")) {
+                if (historicoDB.getPosto().equalsIgnoreCase("Shell")) {
                     viewHolder.imageView.setImageResource(R.drawable.shell);
-                } else if (historicoDB.getTipo().equalsIgnoreCase("Etanol")) {
+                } else if (historicoDB.getPosto().equalsIgnoreCase("Petrobras BR")) {
                     viewHolder.imageView.setImageResource(R.drawable.postobr);
-                } else {
+                } else if (historicoDB.getPosto().equalsIgnoreCase("Outros")){
                     viewHolder.imageView.setImageResource(R.drawable.posto);
                 }
             }

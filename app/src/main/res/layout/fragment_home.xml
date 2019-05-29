@@ -169,10 +169,12 @@
             android:layout_height="wrap_content"
             android:text="Posto: " />
 
-        <EditText
-            android:id="@+id/etPosto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/spPosto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/posto" />
+
     </LinearLayout>
 
     <Button

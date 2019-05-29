@@ -3,6 +3,7 @@
     "data":"",
     "tipo":"",
     "litros":"",
-    "total":""
+    "total":"",
+    "posto": ""
   }
 }

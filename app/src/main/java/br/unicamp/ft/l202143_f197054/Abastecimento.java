@@ -9,8 +9,9 @@ public class Abastecimento {
     private double litros;
     private double preco;
     private String pagamento;
+    private String posto;
 
-    public Abastecimento(String data, double odometro, String combustivel, double total, double litros, double preco, String pagamento) {
+    public Abastecimento(String data, double odometro, String combustivel, double total, double litros, double preco, String pagamento, String posto) {
         this.data = data;
         this.odometro = odometro;
         this.combustivel = combustivel;
@@ -18,6 +19,7 @@ public class Abastecimento {
         this.litros = litros;
         this.preco = preco;
         this.pagamento = pagamento;
+        this.posto = posto;
     }
 
     public String getData() {
@@ -76,4 +78,11 @@ public class Abastecimento {
         this.pagamento = pagamento;
     }
 
+    public String getPosto() {
+        return posto;
+    }
+
+    public void setPosto(String posto) {
+        this.posto = posto;
+    }
 }

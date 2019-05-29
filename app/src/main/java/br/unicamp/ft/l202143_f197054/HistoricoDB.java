@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 public class HistoricoDB {
 
-    private String data, tipo;
+    private String data, tipo, posto;
     private double total, litros;
 
-    public HistoricoDB(String data, String tipo, double litros, double total) {
+    public HistoricoDB(String data, String tipo, double litros, double total, String posto) {
         this.data = data;
         this.tipo = tipo;
         this.litros = litros;
         this.total = total;
+        this.posto = posto;
     }
 
     public HistoricoDB() {
@@ -47,5 +48,13 @@ public class HistoricoDB {
 
     public void setLitros(double litros) {
         this.litros = litros;
+    }
+
+    public String getPosto() {
+        return posto;
+    }
+
+    public void setPosto(String posto) {
+        this.posto = posto;
     }
 }
