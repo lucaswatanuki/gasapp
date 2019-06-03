@@ -132,7 +132,13 @@ public class MainActivity extends AppCompatActivity
             }
 
             replaceFragment(calculadora, "calculadora");
+        } else if (id == R.id.notafiscal){
+            Fragment notafiscal = fragmentManager.findFragmentByTag("nota");
 
+            if (notafiscal == null){
+                notafiscal = new NotaFiscalFragment();
+            }
+            replaceFragment(notafiscal, "nota");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

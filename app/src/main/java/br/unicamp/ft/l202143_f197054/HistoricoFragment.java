@@ -31,6 +31,7 @@ public class HistoricoFragment extends Fragment {
     private FirebaseRecyclerOptions<HistoricoDB> options;
     private FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> adapter;
     private DatabaseReference databaseReference;
+    private View lview;
 
     public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
         TextView tvData;
@@ -65,7 +66,10 @@ public class HistoricoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View lview = inflater.inflate(R.layout.fragment_historico, container, false);
+        if (lview == null) {
+            lview = inflater.inflate(R.layout.fragment_historico, container, false);
+        }
+
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://gasapp-c67e5.firebaseio.com/");
         SnapshotParser<HistoricoDB> parser = new SnapshotParser<HistoricoDB>() {
             @Override
@@ -117,13 +121,18 @@ public class HistoricoFragment extends Fragment {
                 }
             }
         };
+
+
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView mRecycler = ((RecyclerView) lview.findViewById(R.id.recycler_view));
         mRecycler.setLayoutManager(llm);
         mRecycler.setAdapter(mFirebaseAdapter);
+
+
         return lview;
     }
+
 
     @Override
     public void onPause() {
