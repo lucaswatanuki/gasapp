@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalculadoraFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".CalculadoraFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center"
-        >
+        android:orientation="horizontal">
 
 
         <LinearLayout
@@ -21,6 +20,7 @@
             android:paddingLeft="5dp"
             android:paddingTop="10dp"
             android:paddingRight="30dp">
+
             <TextView
                 android:id="@+id/gasolina"
                 android:layout_width="wrap_content"
@@ -35,13 +35,12 @@
                 android:id="@+id/preco_gasolina"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="30dp"
                 android:layout_marginLeft="55dp"
                 android:inputType="numberDecimal"
+                android:paddingHorizontal="30dp"
                 android:singleLine="true"
 
                 />
-
 
 
         </LinearLayout>
@@ -52,6 +51,7 @@
             android:orientation="vertical"
             android:paddingLeft="5dp"
             android:paddingTop="10dp">
+
             <TextView
                 android:id="@+id/etanol"
                 android:layout_width="wrap_content"
@@ -65,12 +65,13 @@
                 android:id="@+id/preco_etanol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="30dp"
                 android:layout_marginLeft="46dp"
                 android:inputType="numberDecimal"
+                android:paddingHorizontal="30dp"
                 android:singleLine="true"
 
                 />
+
 
         </LinearLayout>
 
@@ -78,22 +79,26 @@
 
 
     <Button
-        android:layout_marginTop="40dp"
         android:id="@+id/button_calculo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CALCULAR"
         android:layout_gravity="center"
-        android:textSize="20dp"
-        />
+        android:layout_marginTop="40dp"
+        android:text="CALCULAR"
+        android:textSize="20dp" />
 
     <TextView
+        android:id="@+id/resultado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/resultado"
-        android:layout_marginTop="60dp"
         android:layout_gravity="center"
-        android:textSize="30dp"
-        />
+        android:layout_marginTop="60dp"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/etagas"/>
 
 </LinearLayout>
