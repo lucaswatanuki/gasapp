@@ -151,8 +151,6 @@ public class HomeFragment extends Fragment {
                     odometro = Double.parseDouble(etOdometro.getText().toString());
                     data = etData.getText().toString();
 
-
-                    Abastecimentos.addItem(data, odometro, tipoCombustivel, total, litros, preco, pagamento, posto);
                     HistoricoDB historicoDB = new HistoricoDB(data, tipoCombustivel, litros, total, posto);
                     mFirebaseDatabaseReference.child("historico").push().setValue(historicoDB);
 
