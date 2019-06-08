@@ -1,10 +1,15 @@
 package br.unicamp.ft.l202143_f197054;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +20,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -32,13 +40,15 @@ public class HistoricoFragment extends Fragment {
     private FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> adapter;
     private DatabaseReference databaseReference;
     private View lview;
+    String cData, cLitros, cTipo;
 
-    public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
+    public class HistoricoViewHolder extends RecyclerView.ViewHolder {
         TextView tvData;
         TextView tvTipo;
         TextView tvLitros;
         TextView tvTotal;
         ImageView imageView;
+        CardView cardView;
         private int position;
 
         public HistoricoViewHolder(View v) {
@@ -48,6 +58,7 @@ public class HistoricoFragment extends Fragment {
             tvLitros = (TextView) v.findViewById(R.id.tvLitros);
             tvTotal = (TextView) v.findViewById(R.id.tvTotal);
             imageView = (ImageView) v.findViewById(R.id.imgView);
+            cardView = v.findViewById(R.id.card_view);
         }
     }
 
@@ -62,8 +73,10 @@ public class HistoricoFragment extends Fragment {
     }
 
 
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (lview == null) {
@@ -81,7 +94,7 @@ public class HistoricoFragment extends Fragment {
             }
         };
 
-        DatabaseReference messagesRef = mFirebaseDatabaseReference.child("historico");
+        final DatabaseReference messagesRef = mFirebaseDatabaseReference.child("historico");
 
         FirebaseRecyclerOptions<HistoricoDB> options =
                 new FirebaseRecyclerOptions.Builder<HistoricoDB>()
@@ -97,9 +110,33 @@ public class HistoricoFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(HistoricoViewHolder viewHolder,
-                                            int position,
+            protected void onBindViewHolder(final HistoricoViewHolder viewHolder,
+                                            final int position,
                                             HistoricoDB historicoDB) {
+                try {
+                    viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            mFirebaseAdapter.getSnapshots().getSnapshot(position).getRef().removeValue();
+                            notifyDataSetChanged();
+                            return true;
+                        }
+                    });
+                } catch (IndexOutOfBoundsException e) {
+
+                }
+
+                final String cData = getItem(position).getData();
+
+                viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), EditActivity.class);
+                        intent.putExtra("cData", cData);
+                        startActivity(intent);
+                    }
+                });
+
 
                 viewHolder.tvData.setText("Data: " + historicoDB.getData());
                 viewHolder.tvTipo.setText(historicoDB.getTipo());
@@ -129,10 +166,15 @@ public class HistoricoFragment extends Fragment {
         mRecycler.setLayoutManager(llm);
         mRecycler.setAdapter(mFirebaseAdapter);
 
-
         return lview;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+    }
 
     @Override
     public void onPause() {

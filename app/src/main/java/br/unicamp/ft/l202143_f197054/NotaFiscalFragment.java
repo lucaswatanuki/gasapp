@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -78,9 +79,7 @@ public class NotaFiscalFragment extends Fragment {
                                                 public void onComplete(@NonNull Task<Uri> task) {
                                                     if (task.isSuccessful()) {
                                                         Log.v("URL - Online", task.getResult().toString());
-
-                                                        // Aqui
-
+                                                        Toast.makeText(getContext(), "NF enviada com sucesso!", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             });

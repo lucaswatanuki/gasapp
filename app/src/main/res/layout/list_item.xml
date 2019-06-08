@@ -12,6 +12,7 @@
         android:layout_margin="5dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
+        android:id="@+id/card_view"
         android:clickable="true"
         app:contentPadding="4dp">
 
