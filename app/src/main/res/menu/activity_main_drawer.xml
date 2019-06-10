@@ -17,19 +17,10 @@
             android:icon="@drawable/ic_calculadora"
             android:title="Calculadora" />
 
+        <item
+            android:id="@+id/notafiscal"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Nota Fiscal" />
+
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/notafiscal"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Nota Fiscal" />
-        </menu>
-    </item>
-
 </menu>

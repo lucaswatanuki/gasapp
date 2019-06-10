@@ -21,11 +21,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class EditActivity extends AppCompatActivity {
 
-    private EditText etData, etLitros;
+    private EditText etData, etLitros, etTotal;
     private RadioGroup radioGroup;
     private Button btnUpdate;
     private View view;
-    String cData, litrao, cTipo;
+    String cData;
+    double cLitros, cTotal;
+    String cTipo;
     DatabaseReference databaseReference;
 
     @Override
@@ -35,23 +37,18 @@ public class EditActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         etData = findViewById(R.id.etEditData);
         etLitros = findViewById(R.id.etEditLitros);
+        etTotal = findViewById(R.id.etEditTotal);
         radioGroup = findViewById(R.id.rgEditTipo);
         btnUpdate = findViewById(R.id.btnUpdate);
 
         Bundle intent = getIntent().getExtras();
-        if (intent != null){
+        if (intent != null) {
             cData = intent.getString("cData");
+            cTipo = intent.getString("cTipo");
+            cLitros = intent.getDouble("cLitros");
             etData.setText(cData);
         }
 
@@ -66,6 +63,8 @@ public class EditActivity extends AppCompatActivity {
 
     private void updateDatabase() {
         final String data = etData.getText().toString();
+        final Double litros = Double.valueOf(String.valueOf(etLitros.getText()));
+        final Double total = Double.valueOf(String.valueOf(etLitros.getText()));
         String tipoCombustivel = "";
         try {
 
@@ -84,13 +83,17 @@ public class EditActivity extends AppCompatActivity {
         DatabaseReference mRef = mFirebaseDatabase.getReference("historico");
 
         Query query = mRef.orderByChild("data").equalTo(cData);
+        final String finalTipoCombustivel = tipoCombustivel;
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     dataSnapshot1.getRef().child("data").setValue(data);
+                    dataSnapshot1.getRef().child("tipo").setValue(finalTipoCombustivel);
+                    dataSnapshot1.getRef().child("litros").setValue(litros);
+                    dataSnapshot1.getRef().child("total").setValue(total);
                 }
-                Toast.makeText(EditActivity.this, "Update com sucesso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditActivity.this, "Update feito com sucesso", Toast.LENGTH_SHORT).show();
             }
 
             @Override

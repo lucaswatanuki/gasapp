@@ -2,11 +2,13 @@ package br.unicamp.ft.l202143_f197054;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +18,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SearchView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import br.unicamp.ft.l202143_f197054.HistoricoFragment.HistoricoViewHolder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+
 
 
     @Override
@@ -65,8 +76,9 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         }
-
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -91,12 +103,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -132,10 +138,10 @@ public class MainActivity extends AppCompatActivity
             }
 
             replaceFragment(calculadora, "calculadora");
-        } else if (id == R.id.notafiscal){
+        } else if (id == R.id.notafiscal) {
             Fragment notafiscal = fragmentManager.findFragmentByTag("nota");
 
-            if (notafiscal == null){
+            if (notafiscal == null) {
                 notafiscal = new NotaFiscalFragment();
             }
             replaceFragment(notafiscal, "nota");

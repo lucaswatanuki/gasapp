@@ -5,16 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -40,9 +46,8 @@ public class HistoricoFragment extends Fragment {
     private FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> adapter;
     private DatabaseReference databaseReference;
     private View lview;
-    String cData, cLitros, cTipo;
 
-    public class HistoricoViewHolder extends RecyclerView.ViewHolder {
+    public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
         TextView tvData;
         TextView tvTipo;
         TextView tvLitros;
@@ -73,8 +78,6 @@ public class HistoricoFragment extends Fragment {
     }
 
 
-
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,7 +86,7 @@ public class HistoricoFragment extends Fragment {
             lview = inflater.inflate(R.layout.fragment_historico, container, false);
         }
 
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://gasapp-c67e5.firebaseio.com/");
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         SnapshotParser<HistoricoDB> parser = new SnapshotParser<HistoricoDB>() {
             @Override
             public HistoricoDB parseSnapshot(DataSnapshot dataSnapshot) {
@@ -123,16 +126,24 @@ public class HistoricoFragment extends Fragment {
                         }
                     });
                 } catch (IndexOutOfBoundsException e) {
+                    Toast.makeText(getContext(), "Removido", Toast.LENGTH_SHORT).show();
 
                 }
 
                 final String cData = getItem(position).getData();
+                final String cTipo = getItem(position).getTipo();
+                final Double cLitros = getItem(position).getLitros();
+                final Double cTotal = getItem(position).getTotal();
+
 
                 viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), EditActivity.class);
                         intent.putExtra("cData", cData);
+                        intent.putExtra("cTipo", cTipo);
+                        intent.putExtra("cLitros", cLitros);
+                        intent.putExtra("cTotal", cTotal);
                         startActivity(intent);
                     }
                 });
@@ -159,15 +170,14 @@ public class HistoricoFragment extends Fragment {
             }
         };
 
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView mRecycler = ((RecyclerView) lview.findViewById(R.id.recycler_view));
         mRecycler.setLayoutManager(llm);
         mRecycler.setAdapter(mFirebaseAdapter);
-
         return lview;
     }
+
 
     @Override
     public void onStart() {

@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".EditActivity"
-            android:label="@string/title_activity_edit"
+            android:label="GasApp"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MainActivity"
