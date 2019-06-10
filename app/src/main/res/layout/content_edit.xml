@@ -49,7 +49,8 @@
                 android:id="@+id/rbGasolina"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gasolina" />
+                android:text="Gasolina"
+                />
 
             <RadioButton
                 android:id="@+id/rbEtanol"

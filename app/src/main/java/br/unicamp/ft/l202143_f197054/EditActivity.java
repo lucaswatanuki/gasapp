@@ -49,7 +49,10 @@ public class EditActivity extends AppCompatActivity {
             cData = intent.getString("cData");
             cTipo = intent.getString("cTipo");
             cLitros = intent.getDouble("cLitros");
+            cTotal = intent.getDouble("cTotal");
             etData.setText(cData);
+            etLitros.setText(String.valueOf(cLitros));
+            etTotal.setText(String.valueOf(cTotal));
         }
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +67,7 @@ public class EditActivity extends AppCompatActivity {
     private void updateDatabase() {
         final String data = etData.getText().toString();
         final Double litros = Double.valueOf(String.valueOf(etLitros.getText()));
-        final Double total = Double.valueOf(String.valueOf(etLitros.getText()));
+        final Double total = Double.valueOf(String.valueOf(etTotal.getText()));
         String tipoCombustivel = "";
         try {
 

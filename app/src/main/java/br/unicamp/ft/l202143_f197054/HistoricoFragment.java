@@ -40,11 +40,6 @@ import java.util.ArrayList;
  */
 public class HistoricoFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private ArrayList<HistoricoDB> arrayList;
-    private FirebaseRecyclerOptions<HistoricoDB> options;
-    private FirebaseRecyclerAdapter<HistoricoDB, HistoricoViewHolder> adapter;
-    private DatabaseReference databaseReference;
     private View lview;
 
     public static class HistoricoViewHolder extends RecyclerView.ViewHolder {
@@ -58,11 +53,11 @@ public class HistoricoFragment extends Fragment {
 
         public HistoricoViewHolder(View v) {
             super(v);
-            tvData = (TextView) v.findViewById(R.id.tvData);
-            tvTipo = (TextView) v.findViewById(R.id.tvTipo);
-            tvLitros = (TextView) v.findViewById(R.id.tvLitros);
-            tvTotal = (TextView) v.findViewById(R.id.tvTotal);
-            imageView = (ImageView) v.findViewById(R.id.imgView);
+            tvData = v.findViewById(R.id.tvData);
+            tvTipo = v.findViewById(R.id.tvTipo);
+            tvLitros = v.findViewById(R.id.tvLitros);
+            tvTotal = v.findViewById(R.id.tvTotal);
+            imageView = v.findViewById(R.id.imgView);
             cardView = v.findViewById(R.id.card_view);
         }
     }
@@ -90,9 +85,7 @@ public class HistoricoFragment extends Fragment {
         SnapshotParser<HistoricoDB> parser = new SnapshotParser<HistoricoDB>() {
             @Override
             public HistoricoDB parseSnapshot(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot);
                 HistoricoDB historicoDB = dataSnapshot.getValue(HistoricoDB.class);
-                System.out.println(historicoDB.getTipo());
                 return historicoDB;
             }
         };
@@ -120,14 +113,14 @@ public class HistoricoFragment extends Fragment {
                     viewHolder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            mFirebaseAdapter.getSnapshots().getSnapshot(position).getRef().removeValue();
+                            mFirebaseAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).getRef().removeValue();
+                            notifyItemRemoved(viewHolder.getAdapterPosition());
                             notifyDataSetChanged();
                             return true;
                         }
                     });
                 } catch (IndexOutOfBoundsException e) {
-                    Toast.makeText(getContext(), "Removido", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getContext(), "Erro", Toast.LENGTH_SHORT).show();
                 }
 
                 final String cData = getItem(position).getData();
@@ -172,7 +165,7 @@ public class HistoricoFragment extends Fragment {
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        RecyclerView mRecycler = ((RecyclerView) lview.findViewById(R.id.recycler_view));
+        RecyclerView mRecycler = (lview.findViewById(R.id.recycler_view));
         mRecycler.setLayoutManager(llm);
         mRecycler.setAdapter(mFirebaseAdapter);
         return lview;
