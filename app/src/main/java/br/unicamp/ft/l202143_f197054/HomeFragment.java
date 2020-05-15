@@ -76,16 +76,15 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Double preco = 0d;
-                Double litro = 0d;
+                double preco = 0d;
+                double litro = 0d;
                 try {
                     preco = Double.parseDouble(etPreco.getText().toString());
                     litro = Double.parseDouble(etLitros.getText().toString());
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignored) {
                 }
-                Double resultado = (preco * litro);
-                etTotal.setText(resultado.toString());
-
+                double resultado = (preco * litro);
+                etTotal.setText(Double.toString(resultado));
             }
 
             @Override

@@ -12,11 +12,11 @@ import lombok.Setter;
 public class Abastecimento {
 
     private String data;
-    private double odometro;
+    private Double odometro;
     private String combustivel;
-    private double total;
-    private double litros;
-    private double preco;
+    private Double total;
+    private Double litros;
+    private Double preco;
     private String pagamento;
     private String posto;
 
