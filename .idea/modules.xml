@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GasApp.iml" filepath="$PROJECT_DIR$/GasApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Documents-gasapp.iml" filepath="$PROJECT_DIR$/Documents-gasapp.iml" group="gasapp" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gasapp.iml" filepath="$PROJECT_DIR$/gasapp.iml" group="gasapp" />
+      <module fileurl="file://$PROJECT_DIR$/app/gasapp-app.iml" filepath="$PROJECT_DIR$/app/gasapp-app.iml" group="gasapp/app" />
     </modules>
   </component>
 </project>

@@ -10,14 +10,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import br.unicamp.ft.l202143_f197054.Abastecimento;
+public class CustomAdapter extends RecyclerView.Adapter {
 
-public class Adapter extends RecyclerView.Adapter {
-
-    private ArrayList<HistoricoDB> historicoDB;
+    private final ArrayList<HistoricoDB> historicoDB;
     Context context;
 
-    public Adapter(Context c, ArrayList<HistoricoDB> historicoDB) {
+    public CustomAdapter(Context c, ArrayList<HistoricoDB> historicoDB) {
         context = c;
         this.historicoDB = historicoDB;
     }
@@ -28,14 +26,12 @@ public class Adapter extends RecyclerView.Adapter {
 
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
 
-        final CustomViewHolder customViewHolder = new CustomViewHolder(v);
-
-        return customViewHolder;
+        return new CustomViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        ((CustomViewHolder)viewHolder).bind(historicoDB.get(i), i);
+        ((CustomViewHolder) viewHolder).bind(historicoDB.get(i), i);
     }
 
     @Override
@@ -43,10 +39,10 @@ public class Adapter extends RecyclerView.Adapter {
         return historicoDB.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder{
+    public static class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvData;
-        private TextView tvTipo;
+        private final TextView tvData;
+        private final TextView tvTipo;
 
         private int position;
 
@@ -57,13 +53,13 @@ public class Adapter extends RecyclerView.Adapter {
             tvTipo = itemView.findViewById(R.id.tvTipo);
         }
 
-        public void bind(HistoricoDB historicoDB, int position){
+        public void bind(HistoricoDB historicoDB, int position) {
             tvData.setText(historicoDB.getData());
             tvTipo.setText(historicoDB.getTipo());
             this.position = position;
         }
 
-        public int getHolderPosition(){
+        public int getHolderPosition() {
             return position;
         }
     }

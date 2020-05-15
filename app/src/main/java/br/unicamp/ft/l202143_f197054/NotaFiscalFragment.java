@@ -3,9 +3,7 @@ package br.unicamp.ft.l202143_f197054;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.os.storage.StorageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +23,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -35,10 +31,7 @@ import static android.content.ContentValues.TAG;
 public class NotaFiscalFragment extends Fragment {
 
     private View view;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private String TAG = "NotaFiscalFragment";
-    private Button button;
+    private static final String TAG = "NotaFiscalFragment";
 
     public NotaFiscalFragment() {
         // Required empty public constructor
@@ -53,15 +46,13 @@ public class NotaFiscalFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_nota_fiscal, container, false);
         }
 
-        button = view.findViewById(R.id.salvarNF);
-
+        Button button = view.findViewById(R.id.salvarNF);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage(v);
             }
         });
-
 
         return view;
     }
@@ -97,25 +88,21 @@ public class NotaFiscalFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
 
-        if (requestCode == 2) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    final Uri uri = data.getData();
-                    Log.d(TAG, "Uri: " + uri.toString());
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+            final Uri uri = data.getData();
+            Log.d(TAG, "Uri: " + uri.toString());
 
-                    mFirebaseAuth = FirebaseAuth.getInstance();
-                    mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                    StorageReference storageReference =
-                            FirebaseStorage.getInstance()
-                                    .getReference(mFirebaseUser.getUid())
-                                    .child("notafiscal")
-                                    .child(uri.getLastPathSegment());
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            StorageReference storageReference =
+                    FirebaseStorage.getInstance()
+                            .getReference(mFirebaseUser.getUid())
+                            .child("notafiscal")
+                            .child(uri.getLastPathSegment());
 
-                    putImageInStorage(storageReference, uri);
-                }
-            }
+            putImageInStorage(storageReference, uri);
         }
     }
 

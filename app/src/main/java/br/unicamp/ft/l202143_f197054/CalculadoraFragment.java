@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**
@@ -42,33 +41,31 @@ public class CalculadoraFragment extends Fragment {
         precoEta = v.findViewById(R.id.preco_etanol);
         imgGasEta = v.findViewById(R.id.etagas);
 
+        return calcularPrecos(v);
 
+    }
+
+    private View calcularPrecos(View v) {
         calculo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                double gas = Double.parseDouble(precoGas.getText().toString());
+                double eta = Double.parseDouble(precoEta.getText().toString());
+                double resultado;
 
+                resultado = (gas * 0.7);
 
-               Double gas = Double.parseDouble(precoGas.getText().toString());
-               Double eta = Double.parseDouble(precoEta.getText().toString());
-
-               double resultado;
-
-               resultado = (gas * 0.7);
-
-                if(resultado>eta){
+                if (resultado > eta) {
                     tvResult.setText("A MELHOR OPÇÃO É ETANOL");
                     imgGasEta.setImageResource(R.drawable.etanol_green);
-                }else{
+                } else {
                     tvResult.setText("A MELHOR OPÇÃO É GASOLINA");
                     imgGasEta.setImageResource(R.drawable.gasoline_red);
                 }
             }
         });
-
         return v;
-
     }
-
 }
 
 

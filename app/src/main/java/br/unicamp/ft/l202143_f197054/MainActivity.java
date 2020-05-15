@@ -2,15 +2,10 @@ package br.unicamp.ft.l202143_f197054;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,27 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.SearchView;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-
-import br.unicamp.ft.l202143_f197054.HistoricoFragment.HistoricoViewHolder;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentManager fragmentManager;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +28,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,27 +38,28 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        iniciarHomeFragment();
 
-        Fragment home = new HomeFragment();
+        verificarFirebaseUser();
+    }
 
-        fragmentManager = getSupportFragmentManager();
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.add(R.id.content, home, "home");
-
-        fragmentTransaction.commit();
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+    private void verificarFirebaseUser() {
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         if (mFirebaseUser == null) {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
-            return;
         }
     }
 
+    private void iniciarHomeFragment() {
+        Fragment home = new HomeFragment();
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.content, home, "home");
+        fragmentTransaction.commit();
+    }
 
 
     @Override
@@ -114,33 +96,24 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             Fragment home = fragmentManager.findFragmentByTag("home");
-
             if (home == null) {
                 home = new HomeFragment();
             }
-
             replaceFragment(home, "home");
-
         } else if (id == R.id.nav_gallery) {
             Fragment historico = fragmentManager.findFragmentByTag("historico");
-
             if (historico == null) {
                 historico = new HistoricoFragment();
             }
-
             replaceFragment(historico, "historico");
-
         } else if (id == R.id.nav_slideshow) {
             Fragment calculadora = fragmentManager.findFragmentByTag("calculadora");
-
             if (calculadora == null) {
                 calculadora = new CalculadoraFragment();
             }
-
             replaceFragment(calculadora, "calculadora");
         } else if (id == R.id.notafiscal) {
             Fragment notafiscal = fragmentManager.findFragmentByTag("nota");
-
             if (notafiscal == null) {
                 notafiscal = new NotaFiscalFragment();
             }
